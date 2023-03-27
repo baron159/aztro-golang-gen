@@ -78,18 +78,18 @@ func (a *AztroClientState) Update(gtx layout.Context) {
 	)
 }
 
-func drawMessages(gtx layout.Context, th *material.Theme, msgs []message, sender string) layout.Dimensions {
+func drawMessages(gtx layout.Context, th *material.Theme, msgs []msg.Message, sender string) layout.Dimensions {
 	inset := layout.Inset{
 		Top:    unit.Dp(8),
 		Bottom: unit.Dp(8),
 	}
-	return layout.Flex{Direction: layout.Vertical}.Layout(gtx,
+	return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 			return layout.Dimensions{}
 		}),
 		layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 			return inset.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-				return layout.Flex{Direction: layout.Vertical}.Layout(gtx,
+				return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 					layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 						return layout.Dimensions{}
 					}),
@@ -99,7 +99,7 @@ func drawMessages(gtx layout.Context, th *material.Theme, msgs []message, sender
 								return layout.Dimensions{}
 							}),
 							layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
-								return layout.Flex{Direction: layout.Vertical}.Layout(gtx, len(msgs), func(gtx layout.Context, i int) layout.Dimensions {
+								return layout.Flex{Axis: layout.Vertical}.Layout(gtx, len(msgs), func(gtx layout.Context, i int) layout.Dimensions {
 									return inset.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 										return messageBubble(gtx, msgs[i], sender, th)
 									})
@@ -117,9 +117,9 @@ func drawMessages(gtx layout.Context, th *material.Theme, msgs []message, sender
 }
 
 func messageBubble(gtx layout.Context, msg msg.Message, sender string, th *material.Theme) layout.Dimensions {
-	bubbleColor := th.Color.Text
+	bubbleColor := th.Palette.Fg
 	if msg.Sent {
-		bubbleColor = th.Color.Primary
+		bubbleColor = th.Palette.ContrastFg
 	}
 
 	return material.Card(th, unit.Dp(4), func(gtx layout.Context) layout.Dimensions {
@@ -132,7 +132,7 @@ func messageBubble(gtx layout.Context, msg msg.Message, sender string, th *mater
 				}),
 				layout.Flexed(1, func(gtx layout.Context) layout.Dimensions {
 					return layout.Flex{
-						Direction: layout.Vertical,
+						Axis:      layout.Vertical,
 						Alignment: layout.Start,
 					}.Layout(gtx,
 						layout.Rigid(func(gtx layout.Context) layout.Dimensions {
